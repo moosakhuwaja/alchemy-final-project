@@ -1,17 +1,39 @@
 import React, { useState } from "react";
+import { ethers } from "ethers";
 
-const Form = ({ onSubmit }) => {
-  const [owner, setOwner] = useState("");
+const Form = ({ state, account }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [target, setTarget] = useState("");
   const [deadline, setDeadline] = useState("");
   const [image, setImage] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (onSubmit) {
-      onSubmit({ owner, title, description, target, deadline, image });
+
+    // Check if the contract is available
+    if (!state.contract) {
+      alert("Contract is not initialized.");
+      return;
+    }
+
+    // Create a campaign using the form data
+    try {
+      const { contract } = state;
+      const tx = await contract.createCampaign(
+        state.signer,
+        title,
+        description,
+        ethers.parseEther(target), // Convert target amount to Wei
+        deadline,
+        image
+      );
+
+      await tx.wait(); // Wait for the transaction to be mined
+      alert("Campaign created successfully!");
+    } catch (error) {
+      console.error("Error creating campaign:", error);
+      alert("Error creating campaign. Check console for details.");
     }
   };
 
@@ -20,19 +42,6 @@ const Form = ({ onSubmit }) => {
       onSubmit={handleSubmit}
       className="w-full max-w-md mx-auto p-4 bg-gray-800 text-white rounded-lg"
     >
-      <div className="mb-4">
-        <label className="block text-sm mb-2" htmlFor="owner">
-          Campaign Owner
-        </label>
-        <input
-          id="owner"
-          type="text"
-          value={owner}
-          onChange={(e) => setOwner(e.target.value)}
-          className="w-full p-2 rounded bg-gray-900"
-          required
-        />
-      </div>
       <div className="mb-4">
         <label className="block text-sm mb-2" htmlFor="title">
           Campaign Title
@@ -60,7 +69,7 @@ const Form = ({ onSubmit }) => {
       </div>
       <div className="mb-4">
         <label className="block text-sm mb-2" htmlFor="target">
-          Target Amount (in Wei)
+          Target Amount
         </label>
         <input
           id="target"
