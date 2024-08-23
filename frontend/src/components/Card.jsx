@@ -43,38 +43,46 @@ const CampaignCard = ({ campaign }) => {
   );
 };
 
-const Card = ({ state }) => {
+const Card = ({ state, filterByOwner }) => {
   const [campaigns, setCampaigns] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const getCampaigns = async () => {
-      const { contract } = state;
+      const { contract, signer } = state;
       try {
         const allCampaigns = await contract.getCampaigns();
-        const campaignData = allCampaigns.map((campaign, i) => {
-          const deadlineInMs = Number(campaign.deadline.toString()) * 1000;
-          const deadlineDate = new Date(deadlineInMs);
+        const userAddress = await signer.getAddress();
 
-          const currentTime = new Date();
-          const daysLeft = Math.ceil(
-            (deadlineDate - currentTime) / (1000 * 60 * 60 * 24)
-          );
+        const campaignData = allCampaigns
+          .filter(
+            (campaign) =>
+              !filterByOwner ||
+              campaign.owner.toLowerCase() === userAddress.toLowerCase()
+          )
+          .map((campaign, i) => {
+            const deadlineInMs = Number(campaign.deadline.toString()) * 1000;
+            const deadlineDate = new Date(deadlineInMs);
 
-          return {
-            owner: campaign.owner,
-            title: campaign.title,
-            description: campaign.description,
-            target: ethers.formatEther(campaign.target.toString()),
-            deadline: deadlineDate.toLocaleDateString(),
-            daysLeft,
-            amountCollected: ethers.formatEther(
-              campaign.amountCollected.toString()
-            ),
-            image: campaign.image,
-            pId: i
-          };
-        });
+            const currentTime = new Date();
+            const daysLeft = Math.ceil(
+              (deadlineDate - currentTime) / (1000 * 60 * 60 * 24)
+            );
+
+            return {
+              owner: campaign.owner,
+              title: campaign.title,
+              description: campaign.description,
+              target: ethers.formatEther(campaign.target.toString()),
+              deadline: deadlineDate.toLocaleDateString(),
+              daysLeft,
+              amountCollected: ethers.formatEther(
+                campaign.amountCollected.toString()
+              ),
+              image: campaign.image,
+              pId: i
+            };
+          });
         setCampaigns(campaignData);
       } catch (error) {
         console.error("Error fetching campaigns:", error);
@@ -84,11 +92,11 @@ const Card = ({ state }) => {
     };
 
     getCampaigns();
-  }, [state.contract]);
+  }, [state.contract, filterByOwner]);
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-full bg-gray-800">
+      <div className="flex items-center justify-center h-full bg-slate-600">
         <p className="text-xl font-semibold text-white">loading...</p>
       </div>
     );
@@ -96,7 +104,7 @@ const Card = ({ state }) => {
 
   if (campaigns.length === 0) {
     return (
-      <div className="flex items-center justify-center h-full bg-gray-800">
+      <div className="flex items-center justify-center h-full bg-slate-600">
         <p className="text-xl font-semibold text-white">Connect your wallet.</p>
       </div>
     );

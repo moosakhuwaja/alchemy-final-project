@@ -5,6 +5,7 @@ import Form from "./components/Form";
 import Card from "./components/Card";
 import { ethers } from "ethers";
 import abi from "./contractABI/CrowdFunding.json";
+import Donate from "./components/Donate";
 
 const App = () => {
   const [state, setState] = useState({
@@ -67,13 +68,15 @@ const App = () => {
         {/* Main content scrollable */}
         <div className="flex-1 overflow-hidden p-5 pt-28">
           <div className="relative w-full h-full overflow-auto scrollbar-hidden">
-            <div className="relative w-full h-full overflow-auto scrollbar-hidden">
-              <Card state={state} />
-            </div>
+            {/* <div className="relative w-full h-full overflow-auto scrollbar-hidden">
+              <Card state={state} filterByOwner={false} />
+            </div> */}
 
             {/* <div className="h-full max-h-[calc(100vh-4rem)] overflow-auto scrollbar-hidden">
               <Form state={state} />
             </div> */}
+
+            <Donate state={state} campaignId={9} />
           </div>
         </div>
       </div>
