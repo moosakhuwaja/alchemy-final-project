@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { ethers } from "ethers";
+import { useParams } from "react-router-dom";
 
-const Donate = ({ state, campaignId }) => {
+const Donate = ({ state }) => {
   const [campaign, setCampaign] = useState(null);
   const [amount, setAmount] = useState("");
   const [loading, setLoading] = useState(false);
   const [donators, setDonators] = useState([]);
   const [donations, setDonations] = useState([]);
-
+  const { campaignId } = useParams();
   useEffect(() => {
     const fetchCampaignDetails = async () => {
       if (!state.contract) return;
