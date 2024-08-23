@@ -17,7 +17,7 @@ const App = () => {
   const setupContract = async (provider) => {
     const contractAddress = "0x4f0E4F8d46ae952EA466f7F17eF7e41EfAa806C4";
     const contractABI = abi.abi;
-    console.log(contractABI);
+    // console.log(contractABI);
 
     try {
       const signer = await provider.getSigner();
@@ -31,10 +31,10 @@ const App = () => {
       setState({ provider, signer, contract });
 
       // Debug: Log the contract object and ABI
-      console.log("Contract Instance:", contract);
+      // console.log("Contract Instance:", contract);
       // console.log("Contract ABI:", contractABI);
-      console.log("Contract provider:", provider);
-      console.log("Contract signer:", signer);
+      // console.log("Contract provider:", provider);
+      // console.log("Contract signer:", signer);
       // console.log("Contract state:", state);
     } catch (error) {
       alert(error.message);
@@ -67,15 +67,13 @@ const App = () => {
         {/* Main content scrollable */}
         <div className="flex-1 overflow-hidden p-5 pt-28">
           <div className="relative w-full h-full overflow-auto scrollbar-hidden">
-            {/* <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 min-w-0">
-              {[...Array(10)].map((_, index) => (
-                <Card key={index} />
-              ))}
-            </div> */}
-
-            <div className="h-full max-h-[calc(100vh-4rem)] overflow-auto scrollbar-hidden">
-              <Form state={state} account={account} />
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 min-w-0">
+              <Card state={state} />
             </div>
+
+            {/* <div className="h-full max-h-[calc(100vh-4rem)] overflow-auto scrollbar-hidden">
+              <Form state={state}/>
+            </div> */}
           </div>
         </div>
       </div>
