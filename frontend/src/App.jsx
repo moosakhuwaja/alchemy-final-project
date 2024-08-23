@@ -67,12 +67,12 @@ const App = () => {
         {/* Main content scrollable */}
         <div className="flex-1 overflow-hidden p-5 pt-28">
           <div className="relative w-full h-full overflow-auto scrollbar-hidden">
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 min-w-0">
+            <div className="relative w-full h-full overflow-auto scrollbar-hidden">
               <Card state={state} />
             </div>
 
             {/* <div className="h-full max-h-[calc(100vh-4rem)] overflow-auto scrollbar-hidden">
-              <Form state={state}/>
+              <Form state={state} />
             </div> */}
           </div>
         </div>
