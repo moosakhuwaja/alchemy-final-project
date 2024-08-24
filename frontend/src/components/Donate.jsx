@@ -122,33 +122,39 @@ const Donate = ({ state }) => {
             </div>
           </div>
 
-          <div className="mb-8">
-            <h3 className="text-xl font-bold mb-4 text-center">
-              Donate to Campaign
-            </h3>
-            <div className="mb-4">
-              <label className="block text-sm mb-2" htmlFor="amount">
-                Enter Amount (ETH)
-              </label>
-              <input
-                id="amount"
-                type="number"
-                value={amount}
-                onChange={(e) => setAmount(e.target.value)}
-                className="w-full p-2 rounded bg-gray-900"
-                required
-              />
+          {campaign.daysLeft > 0 ? (
+            <div className="mb-8">
+              <h3 className="text-xl font-bold mb-4 text-center">
+                Donate to Campaign
+              </h3>
+              <div className="mb-4">
+                <label className="block text-sm mb-2" htmlFor="amount">
+                  Enter Amount (ETH)
+                </label>
+                <input
+                  id="amount"
+                  type="number"
+                  value={amount}
+                  onChange={(e) => setAmount(e.target.value)}
+                  className="w-full p-2 rounded bg-gray-900"
+                  required
+                />
+              </div>
+              <button
+                onClick={handleDonate}
+                className={`w-full p-2 rounded bg-blue-600 hover:bg-blue-700 ${
+                  loading ? "cursor-not-allowed opacity-50" : ""
+                }`}
+                disabled={loading}
+              >
+                {loading ? "Processing..." : "Donate"}
+              </button>
             </div>
-            <button
-              onClick={handleDonate}
-              className={`w-full p-2 rounded bg-blue-600 hover:bg-blue-700 ${
-                loading ? "cursor-not-allowed opacity-50" : ""
-              }`}
-              disabled={loading}
-            >
-              {loading ? "Processing..." : "Donate"}
-            </button>
-          </div>
+          ) : (
+            <div className="text-center text-lg text-red-500 font-semibold">
+              Campaign Ended
+            </div>
+          )}
 
           <div className="mt-8">
             <h3 className="text-xl font-bold mb-4 text-center">
