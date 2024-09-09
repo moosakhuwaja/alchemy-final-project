@@ -17,7 +17,7 @@ const App = () => {
   const [account, setAccount] = useState("none");
 
   const setupContract = async (provider) => {
-    const contractAddress = "0x4f0E4F8d46ae952EA466f7F17eF7e41EfAa806C4";
+    const contractAddress = "0xF413799c34409558409ad334e193eb373eb86517";
     const contractABI = abi.abi;
 
     try {
