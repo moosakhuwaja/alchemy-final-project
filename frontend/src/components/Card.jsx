@@ -34,7 +34,7 @@ const CampaignCard = ({ campaign }) => {
           </div>
         </div>
 
-        <div className="mt-4">
+        <div className="mt-4" style={{ marginTop: "0.5rem" }}>
           <p className="text-xs text-gray-400">
             {campaign.owner.slice(0, 30)}...
           </p>
